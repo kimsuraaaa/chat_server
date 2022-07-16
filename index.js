@@ -5,9 +5,9 @@ const http = require('http');
 const moment = require('moment');
 const cors = require('cors');
 // file
-var fs = require('fs');
+// var fs = require('fs');
 // var socketio = require('socket.io');
-const upload = require('./config/multer');
+// const upload = require('./config/multer');
 
 // users.js
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
