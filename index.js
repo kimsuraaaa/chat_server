@@ -4,9 +4,6 @@ const socket = require('socket.io');
 const http = require('http');
 const moment = require('moment');
 const cors = require('cors');
-// file upload (1/3)
-const socketUpload = require('socketio-file-upload');
-const socketio = require('socket.io');
 
 // users.js
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
@@ -18,11 +15,6 @@ const router = require('./router');
 
 const app = express();
 app.use(cors());
-// file upload (2/3)
-app
-  .use(socketUpload.router) // @details express 모듈과 같은 연결 기반 미들웨어를 사용하는 경우 값을 미들웨어로 전달한다.
-  .use(express.static(__dirname)) // @details 경로를 지정( __dirname : 현재경로 )
-  .listen(52273); // @details 포트를 지정
 
 const server = http.createServer(app);
 const io = socket(server, {
@@ -30,24 +22,6 @@ const io = socket(server, {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
   },
-});
-
-// file upload (3/3)
-io.sockets.on('connection', function (socket) {
-  // @breif 업로드를 수행할 소켓( socketio-file-upload ) 인스턴스 생성
-  let uploader = new socketUpload();
-  // @breif 업로드 경로를 지정
-  uploader.dir = '/nodejs';
-  uploader.listen(socket);
-  // @breif 파일이 저장될 때 수행
-  uploader.on('saved', function (event) {
-    console.log(event.file);
-  });
-
-  // @breif 오류 처리
-  uploader.on('error', function (event) {
-    console.log('Error from uploader', event);
-  });
 });
 
 // const io = new Server(server, {
@@ -132,5 +106,3 @@ io.on('connection', (socket) => {
 app.use(router);
 
 server.listen(PORT, () => console.log(`server has started on port ${PORT}`));
-
-// const io = socketio.listen( app );
