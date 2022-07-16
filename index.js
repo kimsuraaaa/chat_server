@@ -29,12 +29,12 @@ const io = socket(server, {
 });
 
 // file
-app.get('/', (request, response) => {
-  fs.readFile('HTMLPage.html', (error, data) => {
-    response.writeHead(200, { 'Content-Type': 'text/html' });
-    response.end(data);
-  });
-});
+// app.get('/', (request, response) => {
+//   fs.readFile('HTMLPage.html', (error, data) => {
+//     response.writeHead(200, { 'Content-Type': 'text/html' });
+//     response.end(data);
+//   });
+// });
 
 // const io = new Server(server, {
 //   cors: {
@@ -98,10 +98,10 @@ io.on('connection', (socket) => {
   });
 
   // file
-  socket.on('image', (data) => {
-    io.sockets.in(roomName).emit('image', data);
-    console.log(data);
-  });
+  // socket.on('image', (data) => {
+  //   io.sockets.in(roomName).emit('image', data);
+  //   console.log(data);
+  // });
 
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
