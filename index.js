@@ -4,6 +4,10 @@ const socket = require('socket.io');
 const http = require('http');
 const moment = require('moment');
 const cors = require('cors');
+// file
+var fs = require('fs');
+// var socketio = require('socket.io');
+const upload = require('./config/multer');
 
 // users.js
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
@@ -22,6 +26,14 @@ const io = socket(server, {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
   },
+});
+
+// file
+app.get('/', (request, response) => {
+  fs.readFile('HTMLPage.html', (error, data) => {
+    response.writeHead(200, { 'Content-Type': 'text/html' });
+    response.end(data);
+  });
 });
 
 // const io = new Server(server, {
@@ -83,6 +95,12 @@ io.on('connection', (socket) => {
     });
 
     // callback();
+  });
+
+  // file
+  socket.on('image', (data) => {
+    io.sockets.in(roomName).emit('image', data);
+    console.log(data);
   });
 
   socket.on('disconnect', () => {
